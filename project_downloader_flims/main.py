@@ -12,6 +12,7 @@ def link():
     proxies = {
         "http": "85.114.120.177:9999"
     }
+    #url change From time to time
     url = downloader.correct_link(film_entry.get())
     if requests.get(url).status_code != 200:
         messagebox.showerror("Error", "this film not exist")
