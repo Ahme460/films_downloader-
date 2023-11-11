@@ -9,22 +9,30 @@ import moudel
 import downloader
 
 def link():
-    proxies = {
-        "http": "85.114.120.177:9999"
-    }
-    #url change From time to time
-    url = downloader.correct_link(film_entry.get())
-    if requests.get(url).status_code != 200:
-        messagebox.showerror("Error", "this film not exist")
-
-    if not film_entry.get():
+    film_name = str(film_entry.get())
+    if not film_name:
         messagebox.showerror("Error", "You must enter a film name.")
         return
 
-    req = requests.get(url, proxies=proxies)
+    url = downloader.correct_link(film_name)
+    if not url:
+        messagebox.showerror("Error", "Film does not exist.")
+        return
+
+    quality_selection = quality_listbox.curselection()
+
+    if not quality_selection:
+        messagebox.showerror("Error", "You must choose a quality.")
+        return
+
+    req = requests.get(url)
+    if req.status_code != 200:
+        messagebox.showerror("Error", "Film does not exist.")
+        return
+
     src = req.content
     html = BeautifulSoup(src, "lxml")
-    
+
     lista = []
     ul_elements = html.find_all('ul', class_='List--Download--Wecima--Single')
 
@@ -53,26 +61,13 @@ def link():
     for jo in flattened_list:
         modified_link = moudel.delate_part_of_linK(jo)
         modified_lista.append(modified_link)
-    
-    film_name = str(film_entry.get())
-    quality_selection = quality_listbox.curselection()
-    
-    if not quality_selection:
-        messagebox.showerror("Error", "You must select a quality.")
-    elif not film_name:
-        messagebox.showerror("Error", "You must enter a film name.")
-    elif not quality_selection and not film_name:
-        messagebox.showerror("Error", "You must enter a film name and choose quality.")
-    else:
-        quality_index = quality_selection[0]
-        if quality_index == 0:
-            webbrowser.open(modified_lista[0])
-        elif quality_index == 1:
-            webbrowser.open(modified_lista[1])
-        elif quality_index == 2:
-            webbrowser.open(modified_lista[2])
-        else:
-            messagebox.showerror("Error", "This quality does not exist. Choose another quality.")
+
+    quality_index = quality_selection[0]
+    if quality_index >= len(modified_lista):
+        messagebox.showerror("Error", "This quality does not exist. Choose another quality.")
+        return
+
+    webbrowser.open(modified_lista[quality_index])
 
 window = tk.Tk()
 window.geometry("700x500")
