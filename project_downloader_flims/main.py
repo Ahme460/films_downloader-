@@ -9,7 +9,8 @@ import moudel
 import downloader
 
 def link():
-    film_name = str(film_entry.get())
+    film_name = str(film_entry.get() +" "+ date_year_film.get())
+    print(film_name)
     if not film_name:
         messagebox.showerror("Error", "You must enter a film name.")
         return
@@ -69,6 +70,7 @@ def link():
 
     webbrowser.open(modified_lista[quality_index])
 
+
 window = tk.Tk()
 window.geometry("700x500")
 window.configure(background="Navy blue")
@@ -77,8 +79,17 @@ window.title("Film Downloader")
 film_label = tk.Label(window, text="Enter the name of a film", pady=10, padx=40, bg="Navy blue", fg="Gray", font=("Helvtica", 15), borderwidth=1)
 film_label.pack(pady=10)
 
+
 film_entry = tk.Entry(window, width=30, font=("Helvtica", 20), bg="Gray", fg="Fuchsia")
 film_entry.pack()
+
+film_label = tk.Label(window, text="Enter Film production year ", pady=10, padx=40, bg="Navy blue", fg="Gray", font=("Helvtica", 15), borderwidth=1)
+film_label.pack(pady=10)
+
+
+date_year_film =tk.Entry(window, width=20, font=("Helvtica", 10), bg="Gray", fg="Fuchsia")
+date_year_film.pack(pady=10)
+
 
 label_lista = tk.Label(window, text="Choose quality for download", pady=10, padx=40, bg="Navy blue", fg="Gray", font=("Helvtica", 15), borderwidth=1)
 label_lista.pack(padx=10, pady=20)
