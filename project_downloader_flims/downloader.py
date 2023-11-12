@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 
 # إرسال طلب POST بمعلومات البحث
 def correct_link (search_query):
-    url = "https://we1mycima.space/"
+    url = "https://we1mycima.store/"
     payload = {"s": search_query}
     response = requests.post(url, data=payload)
     response.raise_for_status()  # التحقق من نجاح الطلب
